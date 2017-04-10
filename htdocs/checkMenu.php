@@ -61,9 +61,9 @@ height:10%;
 		<h4><tab3>checks if Core or Agent are installed on remote machine</tab3><br>
 		<tab3>check takes up to 60 seconds</tab3></h4><br>
 <form action="check.php" method="post">
-<tab1><input type="text" name="IP" value="192.168." placeholder="IP or mane" required/></tab1><br>
+<tab1><input type="text" name="IP" value="" placeholder="IP or mane" required/></tab1><br>
 <tab1><input type="text" name="user" value="Administrator" placeholder="User" value="Administrator" required/></tab1><br>
-<tab1><input type="password" name="password" placeholder="Password"/> <font color="brown"></font></tab1><br>
+<tab1><input type="password" name="password" placeholder="Password" required/> <font color="brown"></font></tab1><br>
 
 
 <tab1> <input type="submit">
