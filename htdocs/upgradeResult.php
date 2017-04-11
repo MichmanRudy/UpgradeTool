@@ -61,7 +61,7 @@ position:relative;
 				</form>
 			</div>
 			<div id="cluster">
-				<form align="center" action="\..\checkUpgrade.html">
+				<form align="center" action="\..\upgradeMenu.php">
 					<input type="submit" value="Upgrade Page">
 				</form>
 			</div>
