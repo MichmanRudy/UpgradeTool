@@ -28,9 +28,10 @@ Write-Host "Go on"
 Function checkVersion ($machinename, $password, $login, $logName)
 {
   
-   #$machinename="192.168.64.183" 
-   #$password=
+   #$machinename="10.10.64.132" 
+   #$password="raid4us!"
    #$login="Administrator"
+   #$logName="c:\testlog.txt"
    #$version="6.1.0.645" 
    #$type=2
    #Waiting 5
@@ -60,22 +61,51 @@ Function checkVersion ($machinename, $password, $login, $logName)
     Logging "Test-Connection function passed" $logName
     }
   
+  #making session to check password
+   Logging "Making session"  $logName
 
-
-   
-     $CoreService= Get-Service -ComputerName $machinename -Name RapidRecoveryCore -ErrorAction SilentlyContinue
-    if($CoreService.Length -eq 0) {Logging "No Core service installed"}
-    else
+    $session = new-pssession -computername $machinename -credential $cred
+ 
+    $counter=0
+    
+  
+    while(-not($session))
         {
+           
+             Logging "$machinename inaccessible! $counter try"  $logName
+             $session = new-pssession -computername $machinename -credential $cred
+             $counter++
+              if( $counter -eq 5) {
+                Logging "No way, man. Could not make session, check password maybe?"  $logName
+             #$D=(Get-Date -f 'dd_MM_yy_HH_mm_ss')
+             #$logname=$D+"_"+$machinename +"_Update_script_log.txt"
+             #Copy-Item -Path C:\xampp\htdocs\logs\PS\upgrade.log -Dest C:\xampp\htdocs\logs\PS\display.log #move to work dir
+             #Rename-Item -Path C:\xampp\htdocs\logs\PS\upgrade.log -NewName "$logname" #move to work dir
+                exit
+               }
+        }
+        Logging "Session is created. Here is proof:" $logName
+      
+        Logging ($session | Select-Object -Property State)  $logName
+
+        #using invoke command to get presence of Core service
+
+       $CoreService=Invoke-Command -Session $session -ScriptBlock { Get-Service -ComputerName $args[0] -Name RapidRecoveryCore -ErrorAction SilentlyContinue} -ArgumentList $machinename
+ 
+     #$CoreService= Get-Service -ComputerName $machinename -Name RapidRecoveryCore -ErrorAction SilentlyContinue 
+    if($CoreService.Length -eq 0) {Logging "No Core service installed" $logName}
+    else
+       {
              Logging "Core version "  $logName
              
              (Get-WMiObject -Credential $cred -ComputerName $machinename -Class Win32_Product | Where-Object -Property "Name" -eq "AppRecovery Core" | Select-Object -Property "Version").version  >> $logName
             Add-content  $logName "<br>"            
-        }
+       }
        
+       $AgentService=Invoke-Command -Session $session -ScriptBlock { Get-Service -ComputerName $args[0] -Name RapidRecoveryAgent -ErrorAction SilentlyContinue} -ArgumentList $machinename
    
-   $AgentService=Get-Service -ComputerName $machinename -Name RapidRecoveryAgent -ErrorAction SilentlyContinue
-    if($AgentService.Length -eq 0) {Logging "No Agent service installed"}
+ #  $AgentService=Get-Service -ComputerName $machinename -Name RapidRecoveryAgent -ErrorAction SilentlyContinue
+    if($AgentService.Length -eq 0) {Logging "No Agent service installed" $logName}
     else
         {
             Logging "Agent version " $logName
@@ -86,7 +116,7 @@ Function checkVersion ($machinename, $password, $login, $logName)
          
 
         
-  
+ Remove-PSSession $session >> $logName 
  Logging "Log file named $logName." $logName
 
    
