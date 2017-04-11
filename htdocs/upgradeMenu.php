@@ -55,6 +55,7 @@ height:10%;
 
     <h2><tab6>Upgrade/install menu</tab6></h2>
 	<h5><tab6>Specify the remote machine's creds and version to Upgrade/Install Core or Agent</tab6></h5>
+	<h5><tab6>After launch the page will be loading about a minute</tab6></h5>
 		
 <form action="upgrade.php" method="post">
 <tab1><input type="text" name="IP" value="" placeholder="IP or mane" required/></tab1><br>
