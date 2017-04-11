@@ -1,6 +1,5 @@
 ﻿<?php
 set_time_limit(300);
-session_start();
 #echo exec('whoami');
 ini_set('max_execution_time',300); 
 $scriptName = $_SERVER['DOCUMENT_ROOT'].'/PS/Check.ps1';
@@ -9,7 +8,6 @@ $logName=$_SERVER['DOCUMENT_ROOT'].'/logs/PS'.$fileName ;
 $logSource=$_SERVER['DOCUMENT_ROOT'].'/checkResult.php';
 copy($logSource,$logName);
 
-$_SESSION['logName']=$logName;
 exec('PowerShell  -file "'.$scriptName.'" -IP "'.$_POST['IP'].'" -password "'.$_POST['password'].'" -user "'.$_POST['user'].'" -logName "'.$logName.'" &');
 
 
@@ -31,3 +29,4 @@ else{
 }
 
 ?>
+
