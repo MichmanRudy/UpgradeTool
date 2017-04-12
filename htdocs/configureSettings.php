@@ -55,19 +55,20 @@ height:10%;
 
     <h2><tab6>Configure Local Settings for Upgrade Utility instance</tab6></h2>
 		<h4><tab3>Submit following values. This must be done once the Upgrade Utility Server is installed</tab3><br>
-		<tab3>They will be written to settings file C:\Users\Administrator\Documents\UpgradeUtility\settings.txt </tab3><br>
+		<tab3>They will be written to settings file and placed to c:\..\Documents\UpgradeToolSettings.txt </tab3><br>
 		<tab3>Don't forget to set Administrator as start-up user for the Apache server in Services </tab3></h4><br><br>
 <form action="configure.php" method="post">
-<tab1><input type="text" name="localServerAdmin" value="Administrator" placeholder="Local Administrator Login" required size = "40"/></tab1><br>
-<tab1><input type="password" name="localServerPassword"  placeholder="Local Administrator Password" required size = "40"/></tab1><br>
+<tab1><input type="text" name="localServerAdmin" value="Administrator" placeholder="Local Administrator Login"  size = "40" required/></tab1><br>
+<tab1><input type="password" name="localServerPassword"  placeholder="Local Administrator Password"  size = "40" required/></tab1><br>
 <tab1><input type="text" name="localServerIP"  placeholder="Local Server IP" required size = "40"/> </tab1><br>
-<tab1><input type="text" name="feedBackShareName"  placeholder="Any Name for Temp Local Share (for Reporting)" required size = "40"/> </tab1><br>
-<tab1><input type="password" name="buildsSharePassword"  placeholder="Password for Remote Share with Builds" required size = "40"/></tab1><br>
-<tab1><input type="text" name="buildsShareUser"  placeholder="User for Remote Share with Builds" required size = "40"/> </tab1><br>
-<tab1><input type="text" name="buildsShareAddress"  placeholder="Network Address for Share with Builds" required size = "40"/> </tab1><br>
-<tab1><input type="text" name="emailLogin"  placeholder="email login" required size = "15"/> </tab1>@
-<input type="text" name="emailDomain"  placeholder="email domain name" required size = "15"/> </tab1><br>
-<tab1><input type="password" name="emailPassword"  placeholder="email password" required size = "40"/></tab1><br>
+<tab1><input type="text" name="feedBackShareName"  placeholder="Any Name for Temp Local Share (for Reporting)"  size = "40" required/> </tab1><br>
+<tab1><input type="password" name="buildsSharePassword"  placeholder="Password for Remote Share with Builds"  size = "40" required/></tab1><br>
+<tab1><input type="text" name="buildsShareUser"  placeholder="User for Remote Share with Builds"  size = "40" required/> </tab1><br>
+<tab1><input type="text" name="buildsShareAddress"  placeholder="Network Address for Share with Builds"  size = "40" required/> </tab1><br>
+<tab1><input type="text" name="emailLogin"  placeholder="email login"  size = "15" required/> </tab1>@
+<input type="text" name="emailDomain"  placeholder="email domain name"  size = "15" required/> </tab1><br>
+<tab1><input type="password" name="emailPassword"  placeholder="email password"  size = "40" required/></tab1><br>
+
 
 <tab1> <input type="submit">
 </form>

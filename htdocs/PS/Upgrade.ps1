@@ -28,16 +28,17 @@ Write-Host "Go on"
 }
 Function MakeSession ($machinename, $password, $login, $version, $type, $logName)
 {
-    if(Test-Path -Path C:\Users\Administrator\Documents\settings.txt)
+$settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
+    if(Test-Path -Path $settingsFile)
     {
 
-        $localServerAdmin = get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 0
-        $localServerPassword= get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 1
-        $localServerIP=get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 2
-        $feedbackShareName=get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 3
-        $buildsSharePassword=get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 4
-        $buildsShareUser=get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 5
-        $buildsShareAddress=get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 6
+        $localServerAdmin = get-content $settingsFile | Select-Object -Index 0
+        $localServerPassword= get-content $settingsFile | Select-Object -Index 1
+        $localServerIP=get-content $settingsFile | Select-Object -Index 2
+        $feedbackShareName=get-content $settingsFile | Select-Object -Index 3
+        $buildsSharePassword=get-content $settingsFile | Select-Object -Index 4
+        $buildsShareUser=get-content $settingsFile | Select-Object -Index 5
+        $buildsShareAddress=get-content $settingsFile | Select-Object -Index 6
 
      }
      else

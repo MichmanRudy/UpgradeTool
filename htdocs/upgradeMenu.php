@@ -80,7 +80,7 @@ function drawArray(DirectoryIterator $directory)
     }
     return $result;
 }
-$lines=file('C:\Users\Administrator\Documents\settings.txt');
+$lines=file('C:\Users\Administrator\Documents\UpgradeToolSettings.txt');
 $array=drawArray(new DirectoryIterator($lines[6]));
 /* Array Contents */
 //$array1 = array('Sydney','Melbourne','Brisbane','Tasmania','Adelaide','Perth','Darwin','ACT');

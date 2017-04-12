@@ -2,7 +2,7 @@
 set_time_limit(300);
 #echo exec('whoami');
 ini_set('max_execution_time',300); 
-$settingsFileName = 'C:\Users\Administrator\Documents\settings.txt';
+$settingsFileName = 'C:\Users\Administrator\Documents\UpgradeToolSettings.txt';
 unlink($settingsFileName);
 // Write the contents to the file, 
 // using the FILE_APPEND flag to append the content to the end of the file
@@ -17,7 +17,6 @@ file_put_contents($settingsFileName, $_POST['buildsShareAddress']."\n", FILE_APP
 file_put_contents($settingsFileName, $_POST['emailLogin']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['emailDomain']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['emailPassword']."\n", FILE_APPEND | LOCK_EX);
-
 $header='Location: \..\ ';
 //echo $header;
 
