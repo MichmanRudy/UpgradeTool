@@ -28,12 +28,13 @@ Write-Host "Go on"
 }
 Function ReportIssue ($name, $severity, $description, $reporter, $email, $logName)
 {
-    if(Test-Path -Path C:\Users\Administrator\Documents\settings.txt)
+$settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
+    if(Test-Path -Path $settingsFile)
     {
 
-        $EmailLogin = get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 7
-        $EmailDomain= get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 8
-        $EmailPassword= get-content C:\Users\Administrator\Documents\settings.txt | Select-Object -Index 9
+        $EmailLogin = get-content $settingsFile | Select-Object -Index 7
+        $EmailDomain= get-content $settingsFile | Select-Object -Index 8
+        $EmailPassword= get-content $settingsFile | Select-Object -Index 9
         
 
      }
