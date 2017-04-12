@@ -7,7 +7,7 @@ $logName=$_SERVER['DOCUMENT_ROOT'].'/logs/PS'.$fileName ;
 $logSource=$_SERVER['DOCUMENT_ROOT'].'/upgradeResult.php';
 copy($logSource,$logName);
 exec('PowerShell  -file "'.$scriptName.'" -IP "'.$_POST['IP'].'" -password "'.$_POST['password'].'" -user "'.$_POST['user'].'" -version "'.$_POST['version'].'" -type "'.$_POST['type'].'" -logName  "'.$logName.'" ');
-$header='Location: \logs\PS'.$fileName;
+$header='Location: logs/PS'.$fileName;
 if(file_exists($scriptName))
 {
 	header($header);
