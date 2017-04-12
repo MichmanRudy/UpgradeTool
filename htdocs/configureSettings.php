@@ -64,7 +64,7 @@ height:10%;
 <tab1><input type="text" name="feedBackShareName"  placeholder="Any Name for Temp Local Share (for Reporting)"  size = "40" required/> </tab1><br>
 <tab1><input type="password" name="buildsSharePassword"  placeholder="Password for Remote Share with Builds"  size = "40" required/></tab1><br>
 <tab1><input type="text" name="buildsShareUser"  placeholder="User for Remote Share with Builds"  size = "40" required/> </tab1><br>
-<tab1><input type="text" name="buildsShareAddress"  placeholder="Network Address for Share with Builds"  size = "40" required/> </tab1><br>
+<tab1>\\<input type="text" name="buildsShareAddress"  placeholder="Network Address for Share with Builds"  size = "38" required/> </tab1><br>
 <tab1><input type="text" name="emailLogin"  placeholder="email login"  size = "15" required/> </tab1>@
 <input type="text" name="emailDomain"  placeholder="email domain name"  size = "15" required/> </tab1><br>
 <tab1><input type="password" name="emailPassword"  placeholder="email password"  size = "40" required/></tab1><br>

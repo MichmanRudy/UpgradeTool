@@ -13,10 +13,10 @@ file_put_contents($settingsFileName, $_POST['localServerIP']."\n", FILE_APPEND |
 file_put_contents($settingsFileName, $_POST['feedBackShareName']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['buildsSharePassword']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['buildsShareUser']."\n", FILE_APPEND | LOCK_EX);
-file_put_contents($settingsFileName, $_POST['buildsShareAddress']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['emailLogin']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['emailDomain']."\n", FILE_APPEND | LOCK_EX);
 file_put_contents($settingsFileName, $_POST['emailPassword']."\n", FILE_APPEND | LOCK_EX);
+file_put_contents($settingsFileName, '\\\\'.$_POST['buildsShareAddress'], FILE_APPEND | LOCK_EX);
 $header='Location: \..\ ';
 //echo $header;
 

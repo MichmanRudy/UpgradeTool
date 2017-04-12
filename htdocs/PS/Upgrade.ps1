@@ -38,7 +38,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
         $feedbackShareName=get-content $settingsFile | Select-Object -Index 3
         $buildsSharePassword=get-content $settingsFile | Select-Object -Index 4
         $buildsShareUser=get-content $settingsFile | Select-Object -Index 5
-        $buildsShareAddress=get-content $settingsFile | Select-Object -Index 6
+        $buildsShareAddress=(get-content $settingsFile | Select-Object -Index 9)
 
      }
      else
@@ -102,7 +102,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     
     $passwDisplay=$password.subString(0, [System.Math]::Min(4, $password.Length))+"****"
    
-    Logging "Submitted values: $machinename $passwDisplay  $login $version $type" $logName
+    Logging "Submitted values: <br>IP: $machinename <br>Password: $passwDisplay <br>Login: $login <br>Version: $version <br>Product: $type <br>" $logName
     set-item wsman:\localhost\Client\TrustedHosts -value $machinename -Force
    #Waiting 1
    Logging "Setting $machinename to trusted hosts"  $logName
@@ -198,7 +198,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     $installerLaunchCommand="c:\latest\"+$installer+" /silent"
     $process = get-wmiobject -query "SELECT * FROM Meta_Class WHERE __Class = 'Win32_Process'" -namespace "root\cimv2" -computername $machinename -credential $cred
     $results = $process.Create( $installerLaunchCommand) 
-    Logging "Probably launched"  $logName
+    Logging "Probably launched <br>"  $logName
 
     #receiving feedback from remote machine
 

@@ -45,7 +45,7 @@ Function checkVersion ($machinename, $password, $login, $logName)
     #ncrypt password
     $passwDisplay=$password.subString(0, [System.Math]::Min(4, $password.Length))+"****"
    
-    Logging "Submitted values: $machinename $passwDisplay  $login $version $type" $logName
+    Logging "Submitted values: <br>IP: $machinename <br>Password: $passwDisplay <br>Login: $login <br>" $logName
     set-item wsman:\localhost\Client\TrustedHosts -value $machinename -Force
    #Waiting 1
    Logging "Setting $machinename to trusted hosts" $logName

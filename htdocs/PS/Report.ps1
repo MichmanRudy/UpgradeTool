@@ -32,9 +32,9 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     if(Test-Path -Path $settingsFile)
     {
 
-        $EmailLogin = get-content $settingsFile | Select-Object -Index 7
-        $EmailDomain= get-content $settingsFile | Select-Object -Index 8
-        $EmailPassword= get-content $settingsFile | Select-Object -Index 9
+        $EmailLogin = get-content $settingsFile | Select-Object -Index 6
+        $EmailDomain= get-content $settingsFile | Select-Object -Index 7
+        $EmailPassword= get-content $settingsFile | Select-Object -Index 8
         
 
      }
