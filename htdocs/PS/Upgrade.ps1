@@ -198,7 +198,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     $installerLaunchCommand="c:\latest\"+$installer+" /silent"
     $process = get-wmiobject -query "SELECT * FROM Meta_Class WHERE __Class = 'Win32_Process'" -namespace "root\cimv2" -computername $machinename -credential $cred
     $results = $process.Create( $installerLaunchCommand) 
-    Logging "Probably launched <br>"  $logName
+    Logging "Probably launched <br> Even if installation will be unsuccessful, installer will stay on your machine in c:\latest"  $logName
 
     #receiving feedback from remote machine
 
