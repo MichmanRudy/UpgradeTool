@@ -151,7 +151,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
              $counter++
               if( $counter -eq 5) {
                 Logging "No way, man. Could not make session, check password maybe? <br> Feel free to ckick browser's 'Back' button and type correct password <br>
-                Also check if Firewall is disabled on remote machine <br> "  $logName
+                If it doesn't help - launch PowerShell on remote machine and perform 'winrm quickconfig'  <br> "  $logName
              #$D=(Get-Date -f 'dd_MM_yy_HH_mm_ss')
              #$logname=$D+"_"+$machinename +"_Update_script_log.txt"
              #Copy-Item -Path C:\xampp\htdocs\logs\PS\upgrade.log -Dest C:\xampp\htdocs\logs\PS\display.log #move to work dir
