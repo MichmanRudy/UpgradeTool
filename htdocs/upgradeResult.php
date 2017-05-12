@@ -12,7 +12,7 @@ $sec="3";
 </head>
  <style>
             html, body {
-                width:600px;
+                width:800px;
                 height:370px;
                 margin-top: 0;
 				margin-bottom: 0;
@@ -56,12 +56,12 @@ position:relative;
 		<div id="subcontainer">
 			
 			<div id="cluster">
-				<form align="center" action="\..\index.html">
+				<form align="center" action="/../index.html">
 					<input type="submit" value="Main Page">
 				</form>
 			</div>
 			<div id="cluster">
-				<form align="center" action="\..\upgradeMenu.php">
+				<form align="center" action="/../upgradeMenu.php">
 					<input type="submit" value="Upgrade Page">
 				</form>
 			</div>

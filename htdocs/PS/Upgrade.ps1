@@ -1,4 +1,4 @@
-﻿param([string]$IP="no", [string]$password="", [string]$user="Administrator", [string]$version="6.1.1.79", [string]$type=1, [string]$logName="c:\logName")
+﻿param([string]$IP="no", [string]$password="", [string]$user="Administrator", [string]$version="6.1.1.79", [string]$type=1, [string]$logName="c:\logName", [string]$justDownload="0", [string]$keepOldBuilds="0")
 
 
 Function Logging ($line, $logName)
@@ -26,7 +26,7 @@ Write-Host -NoNewLine "-> "
 Write-Host "Go on" 
 
 }
-Function MakeSession ($machinename, $password, $login, $version, $type, $logName)
+Function MakeSession ($machinename, $password, $login, $version, $type, $logName, $justDownload, $keepOldBuilds)
 {
 $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     if(Test-Path -Path $settingsFile)
@@ -52,16 +52,16 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     exit
      }
 
-    #$machinename="192.168.64.39"
+    #$machinename="10.10.64.132"
     #$password=
     #$login="Administrator"
-   # $version="6.1.2.107" 
-   # $type=1
+   # $version="6.1.2.111" 
+   # $type=3
     $feedbackShare="c:\$feedbackShareName"
 
      #Waiting 5
    
-     
+     #Restart-Service winRM
    
    Test-Connection -ComputerName $machinename -Quiet
     
@@ -80,7 +80,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
 
     if(!(Test-Path -Path $feedbackShare)) 
     {
-    Logging "Shared directory for process launch result report was not found, so creating one c:\Ashare and sharing it" $logName
+    # Service!!! Logging "Shared directory for process launch result report was not found, so creating one c:\Ashare and sharing it" $logName
 
     New-Item -Path $feedbackShare -ItemType directory -Force
     }
@@ -97,15 +97,38 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     #Remove-Item -Path C:\xampp\htdocs\logs\PS\display.log -Force
     #Remove-Item -Path C:\xampp\htdocs\logs\PS\upgrade.log -Force
 
+    #convert type to text view for displaying
+   # switch ($type) 
+     #       { 
+      #           1 {$typeText="Core" }
+      #           2 {$typeText="Agent x64"} 
+       #          3 {$typeText ="Agent x32"}
+        
+       #         default {$typeText="WTF?"}
+        #    }
+    
+    switch ($type) 
+            { 
+                 1 { Logging "Upgrade mode Core"  $logName
+                   $installer = "Core-X64-"+$version+".exe"
+                   $typeText="Core" } 
+                 2 { Logging "Upgrade mode Agent 64"  $logName
+                   $installer = "Agent-X64-"+$version+".exe"
+                   $typeText="Agent x64" } 
+                 3 { Logging "Upgrade mode Agent 32"  $logName
+                   $installer = "Agent-X86-"+$version+".exe"
+                   $typeText ="Agent x32" } 
+        
+                default {Logging "Upgrade mode Core"  $logName
+                    "Core-X64-"+$version+".exe"}
+            }
     #ncrypt password
-    
-    
     $passwDisplay=$password.subString(0, [System.Math]::Min(4, $password.Length))+"****"
    
-    Logging "Submitted values: <br>IP: $machinename <br>Password: $passwDisplay <br>Login: $login <br>Version: $version <br>Product: $type <br>" $logName
+    Logging "Submitted values: <br>IP: $machinename <br>Password: $passwDisplay <br>Login: $login <br>Version: $version <br>Product: $typeText <br> Just download: $justDownload <br> Keep old builds: $keepOldBuilds <br>" $logName
     set-item wsman:\localhost\Client\TrustedHosts -value $machinename -Force
    #Waiting 1
-   Logging "Setting $machinename to trusted hosts"  $logName
+   # Service!!! Logging "Setting $machinename to trusted hosts"  $logName
 #Check on machine availability
 
     if ((Test-Connection -ComputerName $machinename -Quiet) -eq  0)
@@ -115,28 +138,29 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     }
     else 
     {
-    Logging "Test-Connection function passed" $logName
+    # Service!!! Logging "Test-Connection function passed" $logName
     }
     
     $netUseCommand="net use "+$buildsShareAddress+" /USER:"+$buildsShareUser+" "+$buildsSharePassword
+    $netUseDelete="net use * /delete"
     
-    cmd /c $netUseCommand
+    #cmd /c $netUseCommand
     
 #check for directory with version name availability
     
-    $testPath=$buildsShareAddress+"\"+$version
+    $testPath=$buildsShareAddress+"\"+$version+"\"+$installer
      if ((Test-Path -Path $testPath ) -eq  0)
     {
-    Logging "Specified build folder was not found on networkshare $buildsShareAddress"  $logName
+    Logging "Specified build was not found on networkshare $buildsShareAddress"  $logName
     exit
     }
     else 
     {
-    Logging "Test-Path to version directory on network share passed" $logName
+    # Service!!! Logging "Test-Path to build file on network share passed" $logName
     }
 
 
-     Logging "Making session"  $logName
+     # Service!!! Logging "Making session"  $logName
 
     $session = new-pssession -computername $machinename -credential $cred
  
@@ -159,73 +183,98 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
                 exit
                }
         }
-        Logging "Session is created. Here is proof:" $logName
+       # Service!!! Logging "Session is created. Here is proof:" $logName
       
-        Logging ($session | Select-Object -Property State)  $logName
+       # Service!!! Logging ($session | Select-Object -Property State)  $logName
        # Waiting 5
-     
-     
-
-    switch ($type) 
-    { 
-        1 { Logging "Upgrade mode Core"  $logName
-            $installer = "Core-X64-"+$version+".exe" } 
-        2 { Logging "Upgrade mode Agent 64"  $logName
-            $installer = "Agent-X64-"+$version+".exe" } 
-        3 { Logging "Upgrade mode Agent 32"  $logName
-            $installer = "Agent-X86-"+$version+".exe" } 
+     $disk =  Invoke-Command -Session $session -ScriptBlock { Get-WmiObject Win32_LogicalDisk -ComputerName $args[0] -Filter "DeviceID='C:'" | Foreach-Object {$_.FreeSpace}} -ArgumentList $machinename 
+     $diskDisplay=$disk/1000000
+     if($disk -gt 13000000000)
+     {   
         
-        default {Logging "Upgrade mode Core"  $logName
-            "Core-X64-"+$version+".exe"}
-    }
+         # Service!!! Logging "c drive has $diskDisplay MB free "  $logName
+      }
+       
+      else
+        {
+            Logging "Not enough space on C drive - just $diskDisplay GB, install may fail" $logName
+        }
 
-    Logging "Copy $installer installer"  $logName
-   # Waiting 5
-  
+         
+            
 
-  # get-item wsman:\localhost\Client\TrustedHosts
-   
-    $copyPath="xcopy $buildsShareAddress\"+$version+"\"+$installer+" c:\latest\* /y"
-    $robocopy= "robocopy $buildsShareAddress\"+$version+"\ c:\latest\ "+$installer
-  
-    Invoke-Command -Session $session -ScriptBlock { cmd /c $Args[0]} -ArgumentList $netUseCommand
-    Invoke-Command -Session $session -ScriptBlock { cmd /c del c:\latest\*.exe}
-    Invoke-Command -Session $session -ScriptBlock {cmd /c $args[0]} -ArgumentList $copyPath
-    #Waiting 20
-    Logging "Launching $installer installer"  $logName
-    #Waiting 5
-    
-    Logging "Startting upgrade for $machinename was successful if you get process details under this message"  $logName
-    $installerLaunchCommand="c:\latest\"+$installer+" /silent"
-    $process = get-wmiobject -query "SELECT * FROM Meta_Class WHERE __Class = 'Win32_Process'" -namespace "root\cimv2" -computername $machinename -credential $cred
-    $results = $process.Create( $installerLaunchCommand) 
-    Logging "Probably launched <br> Even if installation will be unsuccessful, installer will stay on your machine in c:\latest"  $logName
-
-    #receiving feedback from remote machine
-
-    $netUseCommandFeedBack=" net use "+"\\"+$localServerIP+"\"+$feedbackShareName+" /USER:"+$env:UserDomain+"\"+$env:UserName+" "+$localServerPassword
-  
-    Invoke-Command -Session $session -ScriptBlock { cmd /c $Args[0]} -ArgumentList $netUseCommandFeedBack
-    if ($type -eq 1) {Invoke-Command -Session $session -ScriptBlock {Get-Process Cor* >>$args[0]}  -ArgumentList $reportNetName}
-    else { Invoke-Command -Session $session -ScriptBlock {Get-Process Age* >> $args[0]} -ArgumentList $reportNetName}
-    
-    
-    #rename log file
-    if(Test-Path -Path $reportFullName)
-    {
-          Get-Content $reportFullName | Out-File $logName -append
           
+             # Waiting 5
+  
 
-     }
-     else
-     {
-     Logging "feedback file was not created" $logName
-     }
+             # get-item wsman:\localhost\Client\TrustedHosts
+   
+            $copyPath="xcopy $buildsShareAddress\"+$version+"\"+$installer+" c:\latest\* /y"
+            $robocopy= "robocopy $buildsShareAddress\"+$version+"\ c:\latest\ "+$installer
+  
+           
+            
+          
+            #Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseCommand
+             #  if($keepOldBuilds -eq 0)
+            #{
+                # Invoke-Command -Session $session -ScriptBlock { cmd /c del c:\latest\*.exe}
+                # Logging "deleting present in c:\latest builds"  $logName
+            #}
+           # Invoke-Command -Session $session -ScriptBlock {cmd /c $args[0]} -ArgumentList $copyPath
+           # Logging "Copy $installer installer using $copyPath command "  $logName
 
-     Logging "Removing temp share" $logName
+            Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseCommand
+            if($keepOldBuilds -eq 0)
+            {
+                Invoke-Command -Session $session -ScriptBlock { cmd /c del c:\latest\*.exe}
+                Logging "Deleting old builds in c:\latest if present"  $logName
+                
+            }
+            Invoke-Command -Session $session -ScriptBlock {cmd /c $args[0]} -ArgumentList $copyPath
+            Logging "Copying $installer installer to c:\latest on your machine "  $logName
+            Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseDelete
+            
+            
+            #Waiting 20
+            if($justDownload -eq "0" )
+            {
+
+                Logging "Launching $installer installer"  $logName
+                 #Waiting 5
+    
+                # Service!!! Logging "Startting upgrade for $machinename was successful if you get process details under this message"  $logName
+                $installerLaunchCommand="c:\latest\"+$installer+" /silent"
+                $process = get-wmiobject -query "SELECT * FROM Meta_Class WHERE __Class = 'Win32_Process'" -namespace "root\cimv2" -computername $machinename -credential $cred
+                $results = $process.Create( $installerLaunchCommand) 
+                # Service!!! Logging "Probably launched <br> Even if installation will be unsuccessful, installer will stay on your machine in c:\latest"  $logName
+
+                #receiving feedback from remote machine
+
+                $netUseCommandFeedBack=" net use "+"\\"+$localServerIP+"\"+$feedbackShareName+" /USER:"+$env:UserDomain+"\"+$env:UserName+" "+$localServerPassword
+  
+                Invoke-Command -Session $session -ScriptBlock { cmd /c $Args[0]} -ArgumentList $netUseCommandFeedBack
+                if ($type -eq 1) {Invoke-Command -Session $session -ScriptBlock {Get-Process Core-* >>$args[0]}  -ArgumentList $reportNetName}
+                else { Invoke-Command -Session $session -ScriptBlock {Get-Process Agent-* >> $args[0]} -ArgumentList $reportNetName}
+                Invoke-Command -Session $session -ScriptBlock { cmd /c $Args[0]} -ArgumentList $netUseDelete
+    
+                #rename log file
+                if(Test-Path -Path $reportFullName)
+                {
+                     Get-Content $reportFullName | Out-File $logName -append
+                     Logging "<br> Installer was launched, if you get process details above" $logName
+                }
+                else
+                {
+                     Logging "feedback file was not created, don't know if launch was successful" $logName
+                }
+            }
+    
+
+     # Service!!! Logging "Removing temp share" $logName
           cmd /c $unShareCommand
           cmd /c rd $feedbackShare /s /q
-Logging "Log file named $logName. Disconnecting session"  $logName
+# Service!!! Logging "Log file named $logName. <br> Disconnecting session"  $logName
  Remove-PSSession $session >> $logName
  Add-Content $logName "<br> </div> </div> </body> </html>"
  		
@@ -238,5 +287,5 @@ Logging "Log file named $logName. Disconnecting session"  $logName
 #taskkill /im powershell.exe /f
 
 
-MakeSession "$IP" "$password" "$user" "$version" "$type" "$logName"
+MakeSession "$IP" "$password" "$user" "$version" "$type" "$logName" "$justDownload" "$keepOldBuilds"
 

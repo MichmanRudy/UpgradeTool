@@ -100,7 +100,13 @@ echo'</select></tab1><br>';
  <tab2><input type="radio"  name="type" value="1" required/> Core
   <input type="radio" name="type" value="2" required/> Agent64
   <input type="radio" name="type" value="3" required/> Agent32<br><br>
+  <tab2>  <input type="checkbox" name="justDownload" value="1" />
+       <label >Just download to C:\latest, don't install</label> </tab2> <br>
+	     <tab2> <input type="checkbox" name="keepOldBuilds" value="1" />
+        <label >keep old Builds in C:\latest</label> </tab2> <br><br>
 <tab1> <input type="submit">
+ 
+  
 </form>
 
 
