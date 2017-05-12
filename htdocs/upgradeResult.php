@@ -12,7 +12,7 @@ $sec="3";
 </head>
  <style>
             html, body {
-                width:800px;
+                width:1000px;
                 height:370px;
                 margin-top: 0;
 				margin-bottom: 0;
