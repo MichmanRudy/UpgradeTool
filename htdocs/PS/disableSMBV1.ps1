@@ -117,7 +117,11 @@ Function MakeSession ($machinename, $password, $login,$logName)
       
        # Service!!! Logging ($session | Select-Object -Property State)  $logName
        # Waiting 5
+       Logging "Win 8 PS command execution: <br>" $logName
      Invoke-Command -Session $session -ScriptBlock { dism /online /norestart /disable-feature /featurename:SMB1Protocol}  >> $logName
+     Logging "Win 7 PS command execution: <br>" $logName
+     Invoke-Command -Session $session -ScriptBlock { Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" SMB1 -Type DWORD -Value 0 -Force}  >> $logName
+     
     
  Remove-PSSession $session >> $logName
  Add-Content $logName "<br> </div> </div> </body> </html>"
