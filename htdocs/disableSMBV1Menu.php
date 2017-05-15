@@ -54,8 +54,9 @@ height:10%;
 <body>
 
     <h2><tab6></tab6>Disable SMBV1 remotely</h2>
-	<h5><tab6>ps script will be launched on specified machine:</tab6></h5> <br>
+	<h5><tab6>ps script will be launched on specified machine:</tab6></h5> 
 	<h5><tab6>dism /online /norestart /disable-feature /featurename:SMB1Protocol</tab6></h5>
+	<h5><tab6>Set-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\LanmanServer\Parameters" SMB1 -Type DWORD -Value 0 -Force</tab6></h5>
 	<h5><tab6>winrm quickconfig should be set on remote machine </tab6></h5> 
 		
 <form action="disableSMBV1.php" method="post">
