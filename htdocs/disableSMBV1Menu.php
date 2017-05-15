@@ -55,7 +55,7 @@ height:10%;
 
     <h2><tab6></tab6>Disable SMBV1 remotely</h2>
 	<h5><tab6>ps script will be launched on specified machine:</tab6></h5> <br>
-	<h5><tab6>ps script will be launched on specified machine:</tab6></h5>
+	<h5><tab6>dism /online /norestart /disable-feature /featurename:SMB1Protocol</tab6></h5>
 	<h5><tab6>winrm quickconfig should be set on remote machine </tab6></h5> 
 		
 <form action="disableSMBV1.php" method="post">
