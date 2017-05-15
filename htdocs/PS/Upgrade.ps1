@@ -55,8 +55,8 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     #$machinename="10.10.64.132"
     #$password=
     #$login="Administrator"
-   # $version="6.1.2.111" 
-   # $type=3
+   # $version="6.1.2.115" 
+   # $type=1
     $feedbackShare="c:\$feedbackShareName"
 
      #Waiting 5
@@ -224,15 +224,31 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
            # Invoke-Command -Session $session -ScriptBlock {cmd /c $args[0]} -ArgumentList $copyPath
            # Logging "Copy $installer installer using $copyPath command "  $logName
 
-            Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseCommand
+            
             if($keepOldBuilds -eq 0)
             {
                 Invoke-Command -Session $session -ScriptBlock { cmd /c del c:\latest\*.exe}
                 Logging "Deleting old builds in c:\latest if present"  $logName
                 
             }
-            Invoke-Command -Session $session -ScriptBlock {cmd /c $args[0]} -ArgumentList $copyPath
-            Logging "Copying $installer installer to c:\latest on your machine "  $logName
+            #$installer="Core-X64-6.1.2.113.exe"
+            $counterForCopyBuildRetry=0
+            $buildCopied= Invoke-Command -Session $session -ScriptBlock {Test-Path -Path $args[0]} -ArgumentList $testPathIstaller
+            $testPathIstaller="c:/latest/"+$installer
+            while ($buildCopied -ne $True)
+            {
+                Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseCommand
+                Invoke-Command -Session $session -ScriptBlock {cmd /c $args[0]} -ArgumentList $copyPath
+                Logging "Copying $installer installer to c:\latest on your machine, try $counterForCopyBuildRetry "  $logName
+                Waiting 3
+                $buildCopied= Invoke-Command -Session $session -ScriptBlock {Test-Path -Path $args[0]} -ArgumentList $testPathIstaller
+                Logging "test path for build presence $buildCopied" $logName
+                Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseDelete
+                $counterForCopyBuildRetry++
+                if($counterForCopyBuildRetry -eq 5) 
+                {Logging "Error 1. Copy Command probably did not work. <br> If installer was not copied to c:\latest, please go back and try again <br> if issue reproduce is stable - contact support on home page" $logName
+                break}
+            }
             Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseDelete
             
             
