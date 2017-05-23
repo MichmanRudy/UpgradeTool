@@ -58,7 +58,7 @@ height:10%;
 	<h5><tab6>After launch the page will be loading about a minute</tab6></h5>
 		
 <form action="upgrade.php" method="post">
-<tab1><input type="text" name="IP" value="" placeholder="IP or mane" required/></tab1><br>
+<tab1><input type="text" name="IP" value="<?php echo $_SERVER['REMOTE_ADDR'];?>" placeholder="IP or mane" required/></tab1><br>
 <tab1><input type="text" name="user" value="Administrator" placeholder="User" value="Administrator" required/></tab1><br>
 <tab1><input type="password" name="password"  placeholder="Password" required/> <font color="brown"></font></tab1><br>
  <?php  
@@ -95,6 +95,7 @@ foreach($array as $value){
 
 } 
 echo'</select></tab1><br>';
+
 ?> 
 <!-- <tab1><input type="text" name="version" placeholder="Installer version" required/></tab1> <br> -->
  <tab2><input type="radio"  name="type" value="1" required/> Core
