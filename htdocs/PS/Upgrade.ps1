@@ -52,7 +52,7 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
     exit
      }
 
-    #$machinename="10.10.64.132"
+    #$machinename="10.10.65.45"
     #$password=
     #$login="Administrator"
    # $version="6.1.2.115" 
@@ -233,8 +233,9 @@ $settingsFile="C:\Users\Administrator\Documents\UpgradeToolSettings.txt"
             }
             #$installer="Core-X64-6.1.2.113.exe"
             $counterForCopyBuildRetry=0
-            $buildCopied= Invoke-Command -Session $session -ScriptBlock {Test-Path -Path $args[0]} -ArgumentList $testPathIstaller
             $testPathIstaller="c:/latest/"+$installer
+            $buildCopied= Invoke-Command -Session $session -ScriptBlock {Test-Path -Path $args[0]} -ArgumentList $testPathIstaller
+            
             while ($buildCopied -ne $True)
             {
                 Invoke-Command -Session $session -ScriptBlock { cmd /c $args[0]} -ArgumentList $netUseCommand
